@@ -1,0 +1,3 @@
+# Ignore files within the data folder, usually contains sensitive data
+data/*
+!data/sample.csv
