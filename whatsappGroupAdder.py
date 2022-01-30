@@ -7,6 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service
 
 options = webdriver.ChromeOptions()
+options.add_argument("--start-maximized")
 options.add_experimental_option('excludeSwitches', ['enable-logging'])
 
 #### CONFIG START ####
@@ -67,7 +68,13 @@ class WhatsAppGroupBot:
         WebDriverWait(self.driver, 5).until(EC.visibility_of_element_located((By.XPATH, '//*[@id="main"]/header/div[2]/div[1]/div/span'))).click()
 
         # Click the Add Members button
-        WebDriverWait(self.driver, 5).until(EC.visibility_of_element_located((By.XPATH, '//*[@id="app"]/div[1]/div[1]/div[2]/div[3]/span/div[1]/span/div[1]/div/section/div[6]/div[2]/div[1]/div[2]/div/div'))).click()
+        try:
+            WebDriverWait(self.driver, 5).until(EC.visibility_of_element_located((By.XPATH, '//*[@id="app"]/div[1]/div[1]/div[2]/div[3]/span/div[1]/span/div[1]/div/section/div[6]/div[2]/div[1]/div[2]/div/div'))).click()
+        # If the user is not the Group Admin, the button will not be present
+        except:
+            print("\nYou are not the Group Admin!")
+            self.driver.quit()
+            exit(1)
 
         # Type each name and click their respective name tile
         for name in self.listNames:
@@ -84,13 +91,21 @@ class WhatsAppGroupBot:
 
     # Exit the bot gracefully
     def exitBot(self):
-        print("Job Done!")
         self.driver.quit()
 
 waBot = WhatsAppGroupBot()
 
 waBot.readNames(DATA_FILE_NAME)
+print("Names read!")
+
 waBot.openWhatsappWeb()
+print("Web Interface Opened!")
+
 waBot.openGroup(WA_GROUP_NAME)
+print("Group Opened!")
+
 waBot.addMembers()
+print("Members Added!")
+
 waBot.exitBot()
+print("Bot Exited!")

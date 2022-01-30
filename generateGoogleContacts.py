@@ -26,19 +26,37 @@ with open(outputFileName, 'w', newline='') as writefile:
         # If the number consists of only digits, pandas considers it as a float
         # Thus, convert to int before writing to the file
         if (type(row["WhatsApp Number"])) is float:
-            writer.writerow({
-                "Name": f'{IDENTIFIER_STR} {row["First Name"]} {row["Last Name"]}',
-                "Given Name": f'{IDENTIFIER_STR} {row["First Name"]}',
-                "Family Name": f'{row["Last Name"]}',
-                "Phone 1 - Type": "WhatsApp",
-                "Phone 1 - Value": f'{int(row["WhatsApp Number"])}',
-            })
+            # If the number is a 10 digit number, it can be directly written to the file
+            if row["WhatsApp Number"] < 10**10 - 1:
+                writer.writerow({
+                    "Name": f'{IDENTIFIER_STR} {row["First Name"]} {row["Last Name"]}',
+                    "Given Name": f'{IDENTIFIER_STR} {row["First Name"]}',
+                    "Family Name": f'{row["Last Name"]}',
+                    "Phone 1 - Type": "WhatsApp",
+                    "Phone 1 - Value": f'{int(row["WhatsApp Number"])}',
+                })
+            # If the number is a float and is greater than 10 digits, it needs to be converted to a string
+            else:
+                phone = str(int(row["WhatsApp Number"]))
+                phone = '+' + phone[:2] + ' ' + phone[2:]
+                writer.writerow({
+                    "Name": f'{IDENTIFIER_STR} {row["First Name"]} {row["Last Name"]}',
+                    "Given Name": f'{IDENTIFIER_STR} {row["First Name"]}',
+                    "Family Name": f'{row["Last Name"]}',
+                    "Phone 1 - Type": "WhatsApp",
+                    "Phone 1 - Value": f'{phone}',
+                })
         # If the number contains spaces or special characters, pandas considers it as a string
         else:
+            phone = row["WhatsApp Number"]
+
+            # If the number contains a '+' sign, it will be considered as an expression in CSV
+            if phone[0] == '+':
+                phone = phone[:3] + ' ' + phone[3:]
             writer.writerow({
                 "Name": f'{IDENTIFIER_STR} {row["First Name"]} {row["Last Name"]}',
                 "Given Name": f'{IDENTIFIER_STR} {row["First Name"]}',
                 "Family Name": f'{row["Last Name"]}',
                 "Phone 1 - Type": "WhatsApp",
-                "Phone 1 - Value": f'{row["WhatsApp Number"]}',
+                "Phone 1 - Value": f'{phone}',
             })
