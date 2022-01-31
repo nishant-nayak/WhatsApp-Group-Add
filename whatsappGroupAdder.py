@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.keys import Keys
 
 options = webdriver.ChromeOptions()
 options.add_argument("--start-maximized")
@@ -76,13 +77,21 @@ class WhatsAppGroupBot:
             self.driver.quit()
             exit(1)
 
+        print("List of Missing Names")
+        print("---------------------")
         # Type each name and click their respective name tile
         for name in self.listNames:
             searchbar = self.driver.find_element(By.XPATH, '//*[@id="app"]/div[1]/span[2]/div[1]/span/div[1]/div/div/div/div/div/div[1]/div/label/div/div[2]')
             searchbar.send_keys(name)
-            nameTile = WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, f'//*[@id="app"]/div[1]/span[2]/div[1]/span/div[1]/div/div/div/div/div/*//*[@title="{name}"]')))
-            nameTile.click()
+            try:
+                nameTile = WebDriverWait(self.driver, 5).until(EC.element_to_be_clickable((By.XPATH, f'//*[@id="app"]/div[1]/span[2]/div[1]/span/div[1]/div/div/div/div/div/*//*[@title="{name}"]')))
+                nameTile.click()
+            except:
+                print(name)
+            searchbar.send_keys(Keys.CONTROL + "a")
+            searchbar.send_keys(Keys.DELETE)
 
+        print()
         # Click the Tick Button
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@data-icon="checkmark-medium"]'))).click()
 
