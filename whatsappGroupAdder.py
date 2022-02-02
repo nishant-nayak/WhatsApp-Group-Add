@@ -98,6 +98,16 @@ class WhatsAppGroupBot:
         # Click the Confirm Button
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, ' //*[@id="app"]/div[1]/span[2]/div[1]/span/div[1]/div/div/div/div/div[2]/div[2]/div'))).click()
 
+        try:
+            # For people who need to be sent invite links, click the Invite Link button
+            WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="app"]/div[1]/span[2]/div[1]/span/div[1]/div/div/div/div/div[2]/div[2]/div/div'))).click()
+
+            # Click the Invite Button
+            WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="app"]/div[1]/span[2]/div[1]/span/div[1]/div/div/div/div/div/div/span/div/span'))).click()
+        except:
+            # If the element is never clickable, then there are no users to be manually invited
+            pass
+
     # Exit the bot gracefully
     def exitBot(self):
         self.driver.quit()
