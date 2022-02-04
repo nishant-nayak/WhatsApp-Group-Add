@@ -43,6 +43,9 @@ class WhatsAppGroupBot:
             )
             print("Not Logged In!")
 
+            # Unselect the "Keep me logged in" checkbox
+            self.driver.find_element('xpath', '//*[@id="app"]/div[1]/div/div[2]/div[1]/div/div[3]/label/input').click()
+
             # Program halts for input to continue
             input("Press Enter to continue...")
         except:
