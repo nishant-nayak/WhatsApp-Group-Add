@@ -77,7 +77,7 @@ class WhatsAppGroupBot:
             self.driver.quit()
             exit(1)
 
-        print("List of Missing Names")
+        print("\nList of Missing Names")
         print("---------------------")
         # Type each name and click their respective name tile
         for name in self.listNames:
@@ -96,7 +96,7 @@ class WhatsAppGroupBot:
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@data-icon="checkmark-medium"]'))).click()
 
         # Click the Confirm Button
-        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, ' //*[@id="app"]/div[1]/span[2]/div[1]/span/div[1]/div/div/div/div/div[2]/div[2]/div'))).click()
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="app"]/div/span[2]/div/span/div/div/div/div/div/div[2]/div/div[2]/div'))).click()
 
         try:
             # For people who need to be sent invite links, click the Invite Link button
