@@ -81,15 +81,14 @@ class WhatsAppGroupBot:
         print("---------------------")
         # Type each name and click their respective name tile
         for name in self.listNames:
-            searchbar = self.driver.find_element(By.XPATH, '//*[@id="app"]/div[1]/span[2]/div[1]/span/div[1]/div/div/div/div/div/div[1]/div/label/div/div[2]')
+            searchbar = self.driver.find_element(By.XPATH, '//*[@id="app"]/div/span[2]/div/span/div/div/div/div/div/div/div[1]/div/div/div[2]/div/div[2]')
             searchbar.send_keys(name)
             try:
                 nameTile = WebDriverWait(self.driver, 5).until(EC.element_to_be_clickable((By.XPATH, f'//*[@id="app"]/div[1]/span[2]/div[1]/span/div[1]/div/div/div/div/div/*//*[@title="{name}"]')))
                 nameTile.click()
             except:
                 print(name)
-            searchbar.send_keys(Keys.CONTROL + "a")
-            searchbar.send_keys(Keys.DELETE)
+            WebDriverWait(self.driver, 5).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="app"]/div/span[2]/div/span/div/div/div/div/div/div/div[1]/div/div/span/button'))).click()
 
         print()
         # Click the Tick Button
