@@ -6,6 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.keys import Keys
+from time import sleep
 
 options = webdriver.ChromeOptions()
 options.add_argument("--start-maximized")
@@ -99,10 +100,11 @@ class WhatsAppGroupBot:
 
         try:
             # For people who need to be sent invite links, click the Invite Link button
-            WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="app"]/div[1]/span[2]/div[1]/span/div[1]/div/div/div/div/div[2]/div[2]/div/div'))).click()
-
+            WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="app"]/div/span[2]/div/span/div/div/div/div/div/div[2]/div/div[2]/div'))).click()
             # Click the Invite Button
-            WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="app"]/div[1]/span[2]/div[1]/span/div[1]/div/div/div/div/div/div/span/div/span'))).click()
+            WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="app"]/div/span[2]/div/span/div/div/div/div/div/div/div/span/div'))).click()
+
+            sleep(20)
         except:
             # If the element is never clickable, then there are no users to be manually invited
             pass
